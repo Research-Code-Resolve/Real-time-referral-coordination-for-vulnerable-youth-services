@@ -62,7 +62,7 @@ function LoginScreen() {
             <div>
               <h1 className="text-3xl font-semibold leading-tight tracking-tight text-slate-700 sm:text-4xl">
                 Social Work 
-                <br>
+                <br/>
                 Connect
               </h1>
               <p className="mt-2 text-sm text-slate-500 sm:text-base">
