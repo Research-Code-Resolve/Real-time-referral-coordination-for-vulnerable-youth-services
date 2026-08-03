@@ -1,11 +1,38 @@
-
+import { useEffect, useState } from 'react';
+import { buildApiUrl, getStoredCredentials } from '../lib/api.js';
 
 function Dashboard() {
-  const followUps = [
-    { title: 'Follow up with Ms. Rivera', time: '10:30 AM' },
-    { title: 'Review housing referral', time: '1:00 PM' },
-    { title: 'Prepare outreach notes', time: '3:15 PM' }
-  ];
+  const [referrals, setReferrals] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    async function fetchReferrals() {
+      try {
+        const authHeader = getStoredCredentials();
+        const response = await fetch(buildApiUrl('/referrals/'), {
+          headers: { Authorization: authHeader },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to load referrals');
+        }
+
+        const data = await response.json();
+        setReferrals(data);
+      } catch {
+        setError('Could not load referrals from the server.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchReferrals();
+  }, []);
+
+  const activeCases = referrals.length;
+  const needsReview = referrals.filter((r) => r.status === 'Submitted').length;
+  const emergencyCases = referrals.filter((r) => r.priority === 'Emergency').length;
 
   return (
     <div className="dashboard-shell">
@@ -19,35 +46,42 @@ function Dashboard() {
         </button>
       </header>
 
+      {error && <p className="error-banner">{error}</p>}
+
       <section className="dashboard-grid">
         <article className="panel panel-large">
           <h2>Today at a glance</h2>
           <div className="stats">
             <div className="stat-card">
-              <strong>12</strong>
+              <strong>{loading ? '…' : activeCases}</strong>
               <span>Active cases</span>
             </div>
             <div className="stat-card">
-              <strong>4</strong>
+              <strong>{loading ? '…' : needsReview}</strong>
               <span>Needs review</span>
             </div>
             <div className="stat-card">
-              <strong>2</strong>
-              <span>Appointments today</span>
+              <strong>{loading ? '…' : emergencyCases}</strong>
+              <span>Emergency priority</span>
             </div>
           </div>
         </article>
 
         <article className="panel">
-          <h2>Upcoming follow-ups</h2>
-          <ul className="task-list">
-            {followUps.map((task) => (
-              <li key={task.title}>
-                <span>{task.title}</span>
-                <strong>{task.time}</strong>
-              </li>
-            ))}
-          </ul>
+          <h2>Recent referrals</h2>
+          {loading ? (
+            <p>Loading…</p>
+          ) : (
+            <ul className="task-list">
+              {referrals.slice(0, 5).map((referral) => (
+                <li key={referral.id}>
+                  <span>{referral.service_needed}</span>
+                  <strong>{referral.status}</strong>
+                </li>
+              ))}
+              {referrals.length === 0 && <li>No referrals yet.</li>}
+            </ul>
+          )}
         </article>
       </section>
     </div>
