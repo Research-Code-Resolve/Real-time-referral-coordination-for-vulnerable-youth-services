@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { buildApiUrl, buildBasicAuthHeader, getStoredCredentials, saveCredentials } from '../lib/api.js';
 
 function LoginScreen() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const storedCredentials = getStoredCredentials();
+  const [email, setEmail] = useState(storedCredentials?.email ?? '');
+  const [password, setPassword] = useState(storedCredentials?.password ?? '');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -20,7 +22,18 @@ function LoginScreen() {
     setLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 700));
+      const response = await fetch(buildApiUrl('/api/organisations/'), {
+        headers: {
+          Accept: 'application/json',
+          Authorization: buildBasicAuthHeader(email, password),
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Unable to authenticate with the provided credentials.');
+      }
+
+      saveCredentials(email, password);
       navigate('/dashboard');
     } catch {
       setError('We could not sign you in. Please try again.');
@@ -28,6 +41,10 @@ function LoginScreen() {
       setLoading(false);
     }
   };
+
+  const handleRequestAccess = () => {
+    navigate('/request-access');
+  }
 
   return (
     <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(167,230,255,0.28),transparent_28%),radial-gradient(circle_at_bottom_right,_rgba(134,239,172,0.22),transparent_35%),#ebf7fb] px-4 py-10 text-slate-900 sm:px-6 lg:px-8">
@@ -87,14 +104,12 @@ function LoginScreen() {
 
             <button
               type="button"
+              onClick={handleRequestAccess}
               className="w-full rounded-[28px] border border-slate-300 bg-white px-5 py-4 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-900"
             >
               Request Access / Register
             </button>
 
-            <div className="mt-3 rounded-full bg-slate-100 px-4 py-3 text-center text-sm font-semibold text-slate-700 shadow-sm">
-              Admin Approval Required
-            </div>
           </form>
         </div>
       </div>
