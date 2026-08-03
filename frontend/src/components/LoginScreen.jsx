@@ -22,7 +22,7 @@ function LoginScreen() {
     setLoading(true);
 
     try {
-      const response = await fetch(buildApiUrl('/api/organisations/'), {
+      const response = await fetch(buildApiUrl('/organisations/'), {
         headers: {
           Accept: 'application/json',
           Authorization: buildBasicAuthHeader(email, password),
