@@ -60,8 +60,10 @@ function LoginScreen() {
               </svg>
             </div>
             <div>
-              <h1 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
-                Social Work Connect
+              <h1 className="text-3xl font-semibold leading-tight tracking-tight text-slate-700 sm:text-4xl">
+                Social Work 
+                <br>
+                Connect
               </h1>
               <p className="mt-2 text-sm text-slate-500 sm:text-base">
                 A clean, secure access point for your team.
