@@ -14,7 +14,7 @@ export default function PartnerDashboard({ me, onLogout }) {
   const summary = computeSummary(referrals);
 
   return (
-    <div className="min-h-screen w-full bg-slate-50">
+    <>
       <AppHeader me={me} onLogout={onLogout} />
 
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
@@ -54,6 +54,6 @@ export default function PartnerDashboard({ me, onLogout }) {
           }}
         />
       )}
-    </div>
+    </>
   );
 }

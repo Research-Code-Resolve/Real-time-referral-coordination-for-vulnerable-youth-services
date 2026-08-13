@@ -14,6 +14,7 @@ export function clearSession() {
   sessionStorage.removeItem("authHeader");
   sessionStorage.removeItem("me");
 }
+
 function announceSessionExpired() {
   window.dispatchEvent(new Event("swconnect:session-expired"));
 }
@@ -44,10 +45,7 @@ export async function apiFetch(path, options = {}) {
   }
 
   if (res.status === 403) {
-    throw new ApiError(
-      "You don't have permission to do that.",
-      403
-    );
+    throw new ApiError("You don't have permission to do that.", 403);
   }
 
   if (!res.ok) {
@@ -83,6 +81,7 @@ export const api = {
 
   // Referrals
   listReferrals: () => apiFetch("/referrals/"),
+  listReferralsForYouth: (youthId) => apiFetch(`/referrals/?youth=${youthId}`),
   getReferral: (id) => apiFetch(`/referrals/${id}/`),
   createReferral: (payload) =>
     apiFetch("/referrals/", { method: "POST", body: JSON.stringify(payload) }),

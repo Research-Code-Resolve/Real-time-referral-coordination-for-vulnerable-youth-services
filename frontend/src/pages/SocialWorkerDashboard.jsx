@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserPlus, Search, Send, ListChecks, AlertTriangle } from "lucide-react";
 import AppHeader from "../components/AppHeader.jsx";
 import SummaryCards from "../components/SummaryCards.jsx";
@@ -9,17 +10,31 @@ import { useReferrals } from "../hooks/useReferrals.js";
 import { computeSummary, sortByRecentActivity } from "../lib/referrals.js";
 
 const QUICK_ACTIONS = [
-  { key: "register", label: "Register Youth", icon: UserPlus, wired: false },
-  { key: "find", label: "Find a Service", icon: Search, wired: false },
+  { key: "register", label: "Register Youth", icon: UserPlus, wired: true },
+  { key: "find", label: "Find a Service", icon: Search, wired: true },
   { key: "create", label: "Create Referral", icon: Send, wired: true },
   { key: "view", label: "View All Referrals", icon: ListChecks, wired: true },
 ];
 
 export default function SocialWorkerDashboard({ me, onLogout }) {
+  const navigate = useNavigate();
   const { referrals, loading, error, reload, replaceReferral, addReferral } = useReferrals();
   const [openReferral, setOpenReferral] = useState(null);
   const [creating, setCreating] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // The sidebar's "New Referral" button lives outside this component (in
+  // Sidebar/DashboardLayout), so it triggers this modal via a URL param
+  // instead of a prop — keeps this component the single owner of its own
+  // modal state.
+  useEffect(() => {
+    if (searchParams.get("new") === "1") {
+      setCreating(true);
+      searchParams.delete("new");
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, setSearchParams]);
 
   const summary = computeSummary(referrals);
   const urgent = referrals.filter(
@@ -36,12 +51,12 @@ export default function SocialWorkerDashboard({ me, onLogout }) {
   function handleQuickAction(key) {
     if (key === "create") setCreating(true);
     if (key === "view") setShowAll(true);
-    // "register" and "find" have no endpoint in the API contract yet —
-    // buttons are visible (per the spec) but intentionally inert.
+    if (key === "register") navigate("/youth");
+    if (key === "find") navigate("/services");
   }
 
   return (
-    <div className="min-h-screen w-full bg-slate-50">
+    <>
       <AppHeader me={me} onLogout={onLogout} />
 
       <main className="max-w-6xl mx-auto px-6 py-8 space-y-8">
@@ -58,17 +73,14 @@ export default function SocialWorkerDashboard({ me, onLogout }) {
 
         {/* Quick actions */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {QUICK_ACTIONS.map(({ key, label, icon: Icon, wired }) => (
+          {QUICK_ACTIONS.map(({ key, label, icon: Icon }) => (
             <button
               key={key}
               onClick={() => handleQuickAction(key)}
-              disabled={!wired}
-              title={wired ? undefined : "Not wired yet — no endpoint in the API contract"}
-              className="rounded-2xl border border-slate-100 bg-white p-5 text-left hover:border-slate-300 disabled:opacity-40 disabled:cursor-not-allowed transition"
+              className="rounded-2xl border border-slate-100 bg-white p-5 text-left hover:border-slate-300 transition"
             >
               <Icon className="h-5 w-5 text-slate-500 mb-3" strokeWidth={1.5} />
               <p className="text-sm font-medium text-slate-700">{label}</p>
-              {!wired && <p className="text-xs text-slate-400 mt-0.5">Coming soon</p>}
             </button>
           ))}
         </div>
@@ -138,6 +150,6 @@ export default function SocialWorkerDashboard({ me, onLogout }) {
           }}
         />
       )}
-    </div>
+    </>
   );
 }

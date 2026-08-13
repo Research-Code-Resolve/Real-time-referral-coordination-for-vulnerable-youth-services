@@ -6,7 +6,7 @@ import AppHeader from "../components/AppHeader.jsx";
 // to Django admin rather than guessing at screens that aren't specified.
 export default function AdminDashboard({ me, onLogout }) {
   return (
-    <div className="min-h-screen w-full bg-slate-50">
+    <>
       <AppHeader me={me} onLogout={onLogout} />
       <main className="max-w-2xl mx-auto px-6 py-16 text-center">
         <div className="mx-auto mb-5 h-14 w-14 rounded-full bg-slate-100 flex items-center justify-center">
@@ -20,7 +20,7 @@ export default function AdminDashboard({ me, onLogout }) {
           there's no dedicated admin API in the contract yet.
         </p>
         <a
-          href="http://localhost:8000/admin/"
+          href="http://localhost:8002/admin/"
           target="_blank"
           rel="noreferrer"
           className="inline-flex items-center gap-2 text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-3 transition"
@@ -28,6 +28,6 @@ export default function AdminDashboard({ me, onLogout }) {
           Open Django admin
         </a>
       </main>
-    </div>
+    </>
   );
 }

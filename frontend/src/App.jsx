@@ -5,6 +5,12 @@ import LoginPage from "./pages/LoginPage.jsx";
 import SocialWorkerDashboard from "./pages/SocialWorkerDashboard.jsx";
 import PartnerDashboard from "./pages/PartnerDashboard.jsx";
 import AdminDashboard from "./pages/AdminDashboard.jsx";
+import YouthCasesPage from "./pages/YouthCasesPage.jsx";
+import ServiceDirectoryPage from "./pages/ServiceDirectoryPage.jsx";
+import ReferralsPage from "./pages/ReferralsPage.jsx";
+import TrackingPage from "./pages/TrackingPage.jsx";
+import NotificationsPage from "./pages/NotificationsPage.jsx";
+import DashboardLayout from "./components/DashboardLayout.jsx";
 import { clearSession } from "./lib/api.js";
 
 const DASHBOARDS = {
@@ -41,6 +47,10 @@ export default function App() {
     navigate("/", { replace: true });
   }
 
+  function handleNewReferral() {
+    navigate("/dashboard?new=1");
+  }
+
   const DashboardForRole = me ? DASHBOARDS[me.role] : null;
 
   function renderUnknownRole() {
@@ -48,7 +58,8 @@ export default function App() {
       <div className="min-h-screen w-full flex items-center justify-center bg-slate-50 px-4">
         <div className="w-full max-w-sm bg-white rounded-3xl shadow-sm border border-slate-100 p-8 text-center">
           <p className="text-sm text-slate-600 mb-4">
-            Signed in as <span className="font-medium">{me.username}</span>, but role "{me.role}" isn't recognised by this app yet.
+            Signed in as <span className="font-medium">{me.username}</span>, but
+            role "{me.role}" isn't recognised by this app yet.
           </p>
           <button
             onClick={handleLogout}
@@ -58,6 +69,16 @@ export default function App() {
           </button>
         </div>
       </div>
+    );
+  }
+
+  function withLayout(page) {
+    return !me ? (
+      <Navigate to="/login" replace />
+    ) : (
+      <DashboardLayout me={me} onNewReferral={handleNewReferral}>
+        {page}
+      </DashboardLayout>
     );
   }
 
@@ -89,12 +110,19 @@ export default function App() {
           !me ? (
             <Navigate to="/login" replace />
           ) : DashboardForRole ? (
-            <DashboardForRole me={me} onLogout={handleLogout} />
+            <DashboardLayout me={me} onNewReferral={handleNewReferral}>
+              <DashboardForRole me={me} onLogout={handleLogout} />
+            </DashboardLayout>
           ) : (
             renderUnknownRole()
           )
         }
       />
+      <Route path="/youth" element={withLayout(<YouthCasesPage me={me} onLogout={handleLogout} />)} />
+      <Route path="/services" element={withLayout(<ServiceDirectoryPage me={me} onLogout={handleLogout} />)} />
+      <Route path="/referrals" element={withLayout(<ReferralsPage me={me} onLogout={handleLogout} />)} />
+      <Route path="/tracking" element={withLayout(<TrackingPage me={me} onLogout={handleLogout} />)} />
+      <Route path="/notifications" element={withLayout(<NotificationsPage me={me} onLogout={handleLogout} />)} />
       <Route path="*" element={<Navigate to={me ? "/dashboard" : "/"} replace />} />
     </Routes>
   );
