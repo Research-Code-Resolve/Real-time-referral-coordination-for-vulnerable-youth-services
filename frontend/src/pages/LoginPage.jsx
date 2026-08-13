@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../lib/api.js';
 
-function LoginScreen() {
+function LoginScreen({ onLoginSuccess }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,7 +27,7 @@ function LoginScreen() {
       const me = await api.me();
       sessionStorage.setItem('me', JSON.stringify(me));
 
-      navigate('/dashboard');
+      onLoginSuccess(me);
     } catch {
       sessionStorage.removeItem('authHeader');
       setError('We could not sign you in. Please try again.');
