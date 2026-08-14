@@ -76,7 +76,7 @@ export default function App() {
     return !me ? (
       <Navigate to="/login" replace />
     ) : (
-      <DashboardLayout me={me} onNewReferral={handleNewReferral}>
+      <DashboardLayout me={me} onNewReferral={handleNewReferral} onLogout={handleLogout}>
         {page}
       </DashboardLayout>
     );
@@ -110,7 +110,7 @@ export default function App() {
           !me ? (
             <Navigate to="/login" replace />
           ) : DashboardForRole ? (
-            <DashboardLayout me={me} onNewReferral={handleNewReferral}>
+            <DashboardLayout me={me} onNewReferral={handleNewReferral} onLogout={handleLogout}>
               <DashboardForRole me={me} onLogout={handleLogout} />
             </DashboardLayout>
           ) : (

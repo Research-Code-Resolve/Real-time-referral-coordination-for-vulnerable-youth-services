@@ -42,8 +42,8 @@ export default function LandingPage({ onGetStarted, onLogin }) {
       <header className="w-full border-b border-slate-100">
         <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2.5">
-            <div className="h-9 w-9 rounded-full bg-slate-100 flex items-center justify-center">
-              <Users className="h-4.5 w-4.5 text-slate-500" strokeWidth={1.5} />
+            <div className="h-9 w-9 rounded-full bg-deepblue-50 flex items-center justify-center">
+              <Users className="h-4.5 w-4.5 text-deepblue-500" strokeWidth={1.5} />
             </div>
             <span className="font-semibold text-slate-800">
               Social Work Connect
@@ -52,13 +52,13 @@ export default function LandingPage({ onGetStarted, onLogin }) {
           <div className="flex items-center gap-3">
             <button
               onClick={onLogin}
-              className="text-sm font-medium text-slate-600 hover:text-slate-900 px-4 py-2 transition"
+              className="text-sm font-medium text-slate-600 hover:text-deepblue-500 px-4 py-2 transition"
             >
               Log In
             </button>
             <button
               onClick={onGetStarted}
-              className="text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white rounded-full px-5 py-2.5 transition"
+              className="text-sm font-medium bg-sage-500 hover:bg-sage-600 text-white rounded-full px-5 py-2.5 transition"
             >
               Get Started
             </button>
@@ -68,10 +68,10 @@ export default function LandingPage({ onGetStarted, onLogin }) {
 
       {/* Hero */}
       <section className="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
-        <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-slate-100 flex items-center justify-center">
-          <Users className="h-7 w-7 text-slate-500" strokeWidth={1.5} />
+        <div className="mx-auto mb-6 h-16 w-16 rounded-full bg-deepblue-50 flex items-center justify-center">
+          <Users className="h-7 w-7 text-deepblue-500" strokeWidth={1.5} />
         </div>
-        <h1 className="text-4xl sm:text-5xl font-semibold text-slate-800 leading-tight max-w-2xl mx-auto">
+        <h1 className="text-4xl sm:text-5xl font-semibold text-deepblue-500 leading-tight max-w-2xl mx-auto">
           One place to coordinate every client referral
         </h1>
         <p className="text-slate-500 text-lg mt-5 max-w-xl mx-auto">
@@ -82,14 +82,14 @@ export default function LandingPage({ onGetStarted, onLogin }) {
         <div className="flex items-center justify-center gap-3 mt-9">
           <button
             onClick={onGetStarted}
-            className="inline-flex items-center gap-2 text-sm font-medium bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-3.5 transition"
+            className="inline-flex items-center gap-2 text-sm font-medium bg-sage-500 hover:bg-sage-600 text-white rounded-full px-6 py-3.5 transition"
           >
             Get Started
             <ArrowRight className="h-4 w-4" />
           </button>
           <button
             onClick={onLogin}
-            className="text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-200 hover:bg-slate-50 rounded-full px-6 py-3.5 transition"
+            className="text-sm font-medium text-slate-600 hover:text-deepblue-500 border border-slate-200 hover:border-deepblue-200 hover:bg-deepblue-50 rounded-full px-6 py-3.5 transition"
           >
             Log In
           </button>
@@ -105,10 +105,10 @@ export default function LandingPage({ onGetStarted, onLogin }) {
           {BENEFITS.map(({ icon: Icon, title, description }) => (
             <div
               key={title}
-              className="rounded-2xl border border-slate-100 p-6 hover:border-slate-200 transition"
+              className="rounded-2xl border border-slate-100 p-6 hover:border-deepblue-100 transition"
             >
-              <div className="h-11 w-11 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                <Icon className="h-5 w-5 text-slate-500" strokeWidth={1.5} />
+              <div className="h-11 w-11 rounded-full bg-deepblue-50 flex items-center justify-center mb-4">
+                <Icon className="h-5 w-5 text-deepblue-500" strokeWidth={1.5} />
               </div>
               <h3 className="font-semibold text-slate-800 mb-1.5">{title}</h3>
               <p className="text-sm text-slate-500 leading-relaxed">
@@ -124,7 +124,7 @@ export default function LandingPage({ onGetStarted, onLogin }) {
         <div className="max-w-5xl mx-auto px-6 py-12">
           <div className="max-w-2xl mx-auto flex items-start gap-4">
             <div className="h-11 w-11 shrink-0 rounded-full bg-white border border-slate-200 flex items-center justify-center">
-              <ShieldCheck className="h-5 w-5 text-slate-500" strokeWidth={1.5} />
+              <ShieldCheck className="h-5 w-5 text-deepblue-500" strokeWidth={1.5} />
             </div>
             <div>
               <h3 className="font-semibold text-slate-800 mb-1.5">
