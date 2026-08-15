@@ -112,4 +112,4 @@ function LoginScreen({ onLoginSuccess }) {
   );
 }
 
-export default LoginScreen;
+export default LoginScreen;clearInterval
