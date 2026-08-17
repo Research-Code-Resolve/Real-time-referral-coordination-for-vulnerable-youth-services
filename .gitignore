@@ -1,0 +1,47 @@
+# =========================
+# Python / Django
+# =========================
+backend/venv/
+backend/__pycache__/
+backend/*/__pycache__/
+backend/*.pyc
+backend/*/*.pyc
+*.py[cod]
+
+# Django
+backend/db.sqlite3
+
+# Environment variables
+.env
+.env.*
+backend/.env
+frontend/.env
+frontend/.env.local
+frontend/.env.development
+frontend/.env.production
+
+# =========================
+# React / Node
+# =========================
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+npm-debug.log*
