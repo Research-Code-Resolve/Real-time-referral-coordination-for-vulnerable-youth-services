@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ChatWidget from "../components/ChatWidget.jsx";
 import {
   Users,
   Search,
@@ -218,6 +219,7 @@ export default function LandingPage({ onGetStarted, onLogin }) {
           </p>
         </div>
       </footer>
+      <ChatWidget currentPage="landing" />
     </div>
   );
 }
