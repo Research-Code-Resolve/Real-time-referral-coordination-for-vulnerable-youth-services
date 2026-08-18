@@ -5,6 +5,9 @@ export class ApiError extends Error {
     this.status = status;
   }
 }
+const API_BASE_URL = import.meta.env.PROD
+  ? "https://referral-platform-deploy.onrender.com/api"
+  : "/api";
 
 function getStoredAuthHeader() {
   return sessionStorage.getItem("authHeader");
@@ -29,10 +32,10 @@ export async function apiFetch(path, options = {}) {
 
   let res;
   try {
-    res = await fetch(`/api${path}`, { ...options, headers });
+    res = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
   } catch (err) {
     throw new ApiError(
-      "Couldn't reach the server. Is the backend running on localhost:8000?",
+      "Couldn't reach the server. Please check your internet connection and try again.",
       0
     );
   }
